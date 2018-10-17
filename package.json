@@ -4,8 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "//": "סטארט מיועד להירוקו שיידע עם איזה קובץ מריצים את האפליקציה",
+    "start": "node server/server.js",
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec \"npm test\""
+  },
+  "engines": {
+    "//": "הגדרות עבור הירוקו שידע איזה נוד להריץ וכו",
+    "node": "10.11.0"
   },
   "author": "",
   "license": "ISC",
