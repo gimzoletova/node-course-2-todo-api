@@ -44,9 +44,7 @@ UserSchema.methods.toJSON = function() {
     return _.pick(userObject, ['_id', 'email']);
 }
 
-UserSchema.methods.generateAuthToken = function() {
-    console.log('inside generateAuthToken');
-    
+UserSchema.methods.generateAuthToken = function() {    
     let user = this;
     let access = 'auth';
     let token = jwt.sign({_id: user._id.toHexString(), access}, 'qazwsx').toString();
@@ -55,8 +53,29 @@ UserSchema.methods.generateAuthToken = function() {
     // user.tokens = user.tokens.concat([{access, token}]); //instead of < user.tokens.push({access, token}); > that could make problems with mongodb
     // user.tokens.push({access, token});
     return user.save().then(() => {
-        console.log('in here');        
         return token;
+    });
+};
+
+UserSchema.statics.findByToken = function (token) {
+    console.log('inside findByToken');
+    
+    let User = this;
+    let decoded;
+
+    try {
+        decoded = jwt.verify(token, 'qazwsx');
+    } catch(err) {
+        // return new Promise((resolve, reject) => {
+        //     reject();
+        // }); instead of this we can just write:
+        return Promise.reject();
+    }
+
+    return User.findOne({
+       '_id': decoded._id,
+       'tokens.token' : token,
+       'tokens.access' : 'auth'
     });
 };
 
