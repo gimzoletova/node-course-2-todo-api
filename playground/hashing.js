@@ -16,7 +16,7 @@ let h_pass = '$2a$10$GpTu0A74z2/1uB9SJNytXusd1m5bS3ZUUW6y6vFwpHmwhslRErOJu';
 bcrypt.compare(pass, h_pass, (err, res) => {
     console.log(res);
     
-})
+});
 
 // let data = {
 //     id: 4

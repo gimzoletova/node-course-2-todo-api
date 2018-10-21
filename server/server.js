@@ -65,9 +65,7 @@ app.delete('/todos/:id', (req, res) => {
 
 app.patch('/todos/:id', (req, res) => {
     var id = req.params.id;
-    var body = _.pick(req.body, ['text', 'completed']);
-    console.log(body);
-    
+    var body = _.pick(req.body, ['text', 'completed']);    
 
     if (!ObjectID.isValid(id))
         return res.status(404).send();
@@ -104,6 +102,16 @@ app.post('/users', (req, res) => {
 
 app.get('/users/me', authenticate, (req, res) => {
     res.send(req.user)
+});
+
+app.post('/users/login', (req, res) => {
+    User.findByCredentials(req.body.email, req.body.password).then((user) => {
+        return user.generateAuthToken().then((token) => {
+            res.header('x-auth', token).send(user);
+        });
+    }).catch((err) => {
+        res.status(400).send();
+    });
 });
 
 app.listen(port, () => console.log(`I'm listening on port ${port}`));
