@@ -1,14 +1,15 @@
 var env = process.env.NODE_ENV || 'development';
 console.log("env*******************", env);
 
+if (env === 'development' || env === 'test') {
+    const config = require('./config.json');
+    const envConfig = config[env];
 
-if (env === 'development') {
-    process.env.PORT = 3000;
-    process.env.MONGODB_URI = 'mongodb://localhost:27017/todoApp';
-
-} else if (env === 'test') {
-    process.env.PORT = 3000;
-    process.env.MONGODB_URI = 'mongodb://localhost:27017/todoAppTest';
-} else {
-    process.env.MONGODB_URI = 'mongodb://gimzoletova:bgnhrjk1!@ds235053.mlab.com:35053/to_do_app';
+    Object.keys(envConfig).forEach((key) => { //Object.keys returns an array of all the keys in object
+        process.env[key] = envConfig[key]; // [] on left side used to set a key and on the right side to call the val of that key
+    });
 }
+
+//env vars for production are set in the production area
+
+
