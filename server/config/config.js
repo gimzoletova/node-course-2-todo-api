@@ -11,5 +11,3 @@ if (env === 'development' || env === 'test') {
 }
 
 //env vars for production are set in the production area
-
-
